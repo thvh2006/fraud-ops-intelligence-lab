@@ -1,0 +1,56 @@
+project:
+  name: fraud-ops-intelligence-lab
+  dataset: ieee-cis-fraud-detection
+  prediction_unit: transaction
+  ranking_unit: entity_alert
+  target: isFraud
+  time_column: TransactionDT
+  amount_column: TransactionAmt
+  id_column: TransactionID
+
+data:
+  expected_files:
+    - train_transaction.csv
+    - train_identity.csv
+    - test_transaction.csv
+    - test_identity.csv
+    - sample_submission.csv
+  required_transaction_columns:
+    - TransactionID
+    - isFraud
+    - TransactionDT
+    - TransactionAmt
+    - ProductCD
+  required_identity_columns:
+    - TransactionID
+  raw_data_committed: false
+
+temporal_design:
+  # Fractions apply after sorting by TransactionDT. Boundaries are fitted once,
+  # recorded, then locked before evaluating the final OOT period.
+  development_end: 0.60
+  calibration_end: 0.75
+  policy_end: 0.85
+  oot_end: 1.00
+  purge_gap_seconds: 0
+
+operations:
+  daily_review_capacities: [50, 100, 250, 500]
+  decision_actions: [allow, step_up, review, block]
+  entity_deduplication: true
+  primary_selection_metric: daily_precision_at_k
+  secondary_metrics:
+    - daily_recall_at_k
+    - exposure_captured_at_k
+    - legitimate_exposure_interrupted
+    - average_precision
+    - brier_score
+
+label_delay_scenarios_days: [0, 7, 14, 30]
+
+economics:
+  # These are scenario variables, not claims about the data provider.
+  false_positive_costs: [1, 5, 20]
+  review_costs: [1, 3, 10]
+  fraud_loss_given_event: [0.25, 0.50, 1.00]
+
