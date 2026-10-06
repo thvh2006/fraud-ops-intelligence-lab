@@ -30,8 +30,8 @@ The project will use the IEEE-CIS Fraud Detection data: real, anonymised e-comme
 | Phase | Outcome | Status |
 |---|---|---|
 | 0 | Research charter, source review, data contract, temporal design | Complete |
-| 1 | Acquire data, validate schema, profile time/identity coverage | Awaiting Kaggle access |
-| 2 | Leakage-safe baseline and locked out-of-time benchmark | Planned |
+| 1 | Acquire data, validate schema, profile time/identity coverage | Complete |
+| 2 | Leakage-safe baseline and locked out-of-time benchmark | In progress |
 | 3 | Behavioural/entity features and ablation study | Planned |
 | 4 | Alert prioritisation and four-action policy | Planned |
 | 5 | Delayed-label and drift backtests | Planned |
@@ -64,7 +64,10 @@ pytest
 
 The acquisition script fails safely when credentials or rule acceptance are missing. See [`data/README.md`](data/README.md) for the exact contract.
 
+## Phase 1 evidence
+
+The labelled source contains 590,540 transactions over 182 elapsed days and 20,663 fraud cases (3.50%). Only 24.42% of transactions have an identity-table match. Fraud rate varies from 1.85% to 5.06% across elapsed weeks, making chronological validation a material design requirement. See [`docs/data_profile.md`](docs/data_profile.md) for the full aggregate-only readout.
+
 ## Claims boundary
 
 This is a portfolio-grade operational simulation on real anonymised transactions. It is not a deployed fraud system. `TransactionAmt` is treated as exposure, not confirmed recoverable loss; investigation decisions, chargeback dates, true intervention costs, and protected attributes are not available in the source data. Assumptions will therefore be surfaced and sensitivity-tested rather than presented as observed facts.
-

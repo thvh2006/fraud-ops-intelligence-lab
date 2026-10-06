@@ -1,0 +1,14 @@
+{
+  "fraud_rate": 0.03499000914417313,
+  "identity_coverage": 0.2442391709283029,
+  "partition_rows": {
+    "calibration": 88581,
+    "development": 354324,
+    "oot": 88581,
+    "policy": 59054
+  },
+  "raw_rows_published": false,
+  "rows": 590540,
+  "time_max": 15811131.0,
+  "time_min": 86400.0
+}

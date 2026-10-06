@@ -72,7 +72,8 @@ def join_identity(
     joined = transactions.merge(
         identity.assign(_has_identity=1), on="TransactionID", how="left", validate="one_to_one"
     )
-    joined["has_identity"] = joined.pop("_has_identity").fillna(0).astype("int8")
+    identity_flag = joined.pop("_has_identity").fillna(0).astype("int8").rename("has_identity")
+    joined = pd.concat([joined, identity_flag], axis=1)
     coverage = float(joined["has_identity"].mean())
     summary = ContractSummary(
         rows=base_summary.rows,
@@ -85,4 +86,3 @@ def join_identity(
     if len(joined.columns) != expected_columns:
         raise DataContractError("Unexpected column count after identity join")
     return joined, summary
-
