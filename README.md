@@ -34,8 +34,8 @@ The project will use the IEEE-CIS Fraud Detection data: real, anonymised e-comme
 | 2 | Leakage-safe baseline and locked out-of-time benchmark | Complete |
 | 3 | Behavioural/entity features and non-linear challenger | Complete |
 | 4 | Alert prioritisation and four-action policy | Complete |
-| 5 | Delayed-label and drift backtests | In progress |
-| 6 | Dashboard, model card, decision memo, publication | Planned |
+| 5 | Delayed-label and drift backtests | Complete |
+| 6 | Dashboard, model card, decision memo, publication | In progress |
 
 ## Repository map
 
@@ -79,6 +79,10 @@ The policy-selected gradient-boosting challenger reaches 34.71% mean daily preci
 ## Four-action policy
 
 Under the explicitly hypothetical balanced scenario, a 100-review/day policy uses 83.8 reviews/day on locked OOT data, intervenes on 61.21% of fraud cases, covers 79.94% of fraud exposure, and produces a 57.82% effectiveness-adjusted prevented-exposure proxy. The result also interrupts 8,731 legitimate transactions, so customer-first and loss-first sensitivity scenarios remain visible rather than collapsing the decision into a single “savings” number. See [`docs/policy_decision_memo.md`](docs/policy_decision_memo.md).
+
+## Delayed labels and monitoring
+
+The simulated fast investigator stream has a 33.85% fraud rate versus 2.33% outside the reviewed queue, a 14.5× selection-bias ratio. Point-in-time rolling recalibration uses only labels available at each weekly snapshot under 7/14/30-day delays; its Brier improvement is just 0.00007–0.00008, so no delay setting is declared a winner. Across six locked OOT weeks, maximum score PSI is 0.063 and no pre-declared red drift alert fires. See [`docs/monitoring_and_delayed_labels.md`](docs/monitoring_and_delayed_labels.md).
 
 ## Claims boundary
 
