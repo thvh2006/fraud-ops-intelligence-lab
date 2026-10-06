@@ -1,0 +1,11 @@
+{
+  "reviewed_feedback_fraud_rate": 0.338452787258248,
+  "non_reviewed_population_fraud_rate": 0.023285871832875577,
+  "selection_bias_rate_ratio": 14.534683935707827,
+  "oot_weeks": 6,
+  "max_weekly_score_psi": 0.06339266046919285,
+  "red_monitoring_alerts": 0,
+  "minimum_mean_brier_improvement": 6.577706318076221e-05,
+  "maximum_mean_brier_improvement": 8.203987337011831e-05,
+  "delay_window_recommended": false
+}
