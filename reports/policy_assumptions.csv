@@ -1,0 +1,4 @@
+name,loss_given_fraud,step_up_effectiveness,review_effectiveness,block_effectiveness,step_up_fixed_cost,step_up_legit_friction,review_fixed_cost,review_legit_friction,block_fixed_cost,block_legit_amount_fraction
+balanced_reference,0.6,0.4,0.75,0.95,0.5,1.5,5.0,3.0,10.0,0.08
+customer_first,0.5,0.35,0.7,0.95,0.75,2.5,8.0,5.0,25.0,0.2
+loss_first,0.8,0.45,0.8,0.97,0.4,0.75,3.0,1.5,5.0,0.03
