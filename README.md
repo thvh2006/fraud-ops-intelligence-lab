@@ -31,8 +31,8 @@ The project will use the IEEE-CIS Fraud Detection data: real, anonymised e-comme
 |---|---|---|
 | 0 | Research charter, source review, data contract, temporal design | Complete |
 | 1 | Acquire data, validate schema, profile time/identity coverage | Complete |
-| 2 | Leakage-safe baseline and locked out-of-time benchmark | In progress |
-| 3 | Behavioural/entity features and ablation study | Planned |
+| 2 | Leakage-safe baseline and locked out-of-time benchmark | Complete |
+| 3 | Behavioural/entity features and non-linear challenger | In progress |
 | 4 | Alert prioritisation and four-action policy | Planned |
 | 5 | Delayed-label and drift backtests | Planned |
 | 6 | Dashboard, model card, decision memo, publication | Planned |
@@ -67,6 +67,10 @@ The acquisition script fails safely when credentials or rule acceptance are miss
 ## Phase 1 evidence
 
 The labelled source contains 590,540 transactions over 182 elapsed days and 20,663 fraud cases (3.50%). Only 24.42% of transactions have an identity-table match. Fraud rate varies from 1.85% to 5.06% across elapsed weeks, making chronological validation a material design requirement. See [`docs/data_profile.md`](docs/data_profile.md) for the full aggregate-only readout.
+
+## Baseline decision
+
+A calibrated linear model was selected on the policy window at 100 entity-deduplicated alerts per elapsed day. On locked OOT data it reaches 14.16% mean daily precision@100, 14.28% mean daily recall@100, and 10.29% mean daily fraud-exposure capture@100. The rule baseline captures more exposure but interrupts almost five times as much legitimate value, showing why a single capture metric is not enough. See [`docs/baseline_decision_memo.md`](docs/baseline_decision_memo.md).
 
 ## Claims boundary
 
