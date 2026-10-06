@@ -1,0 +1,10 @@
+{
+  "selected_on_policy_window": "linear",
+  "selection_metric": "mean daily precision at 100 entity-deduplicated alerts",
+  "oot_average_precision": 0.10951673987087393,
+  "oot_roc_auc": 0.7109742233567639,
+  "oot_brier_score": 0.03319166065564561,
+  "oot_mean_daily_precision_at_100": 0.14161290322580644,
+  "oot_mean_daily_recall_at_100": 0.1428347517568627,
+  "oot_mean_daily_exposure_capture_at_100": 0.10288587595584044
+}
