@@ -3,15 +3,18 @@
 from __future__ import annotations
 
 import json
+import sys
 from pathlib import Path
 
 import pandas as pd
 
-from src.data_contract import join_identity
-from src.temporal import assign_temporal_partitions, assert_temporal_separation
-
-
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+
+from src.data_contract import join_identity  # noqa: E402
+from src.temporal import assign_temporal_partitions, assert_temporal_separation  # noqa: E402
+
+
 RAW = ROOT / "data" / "raw"
 REPORT = ROOT / "reports" / "data_receipt.json"
 
@@ -45,4 +48,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

@@ -1,0 +1,18 @@
+{
+  "elapsed_days": 182,
+  "columns_transaction": 394,
+  "features_identity": 40,
+  "features_over_90pct_missing": 11,
+  "predictors_transaction": 390,
+  "fraud_cases": 20663,
+  "fraud_exposure": 3083844.8600000003,
+  "fraud_exposure_share": 0.03867426030720168,
+  "fraud_rate": 0.03499000914417313,
+  "fully_missing_features": 0,
+  "identity_coverage": 0.2442391709283029,
+  "repeat_entity_transaction_share": 0.9210739323331188,
+  "top_1pct_fraud_entity_case_share": 0.24705996225136717,
+  "total_exposure": 79738948.735,
+  "transactions": 590540,
+  "unique_proxy_entities": 94873
+}
