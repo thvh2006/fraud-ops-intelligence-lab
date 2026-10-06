@@ -33,8 +33,8 @@ The project will use the IEEE-CIS Fraud Detection data: real, anonymised e-comme
 | 1 | Acquire data, validate schema, profile time/identity coverage | Complete |
 | 2 | Leakage-safe baseline and locked out-of-time benchmark | Complete |
 | 3 | Behavioural/entity features and non-linear challenger | Complete |
-| 4 | Alert prioritisation and four-action policy | In progress |
-| 5 | Delayed-label and drift backtests | Planned |
+| 4 | Alert prioritisation and four-action policy | Complete |
+| 5 | Delayed-label and drift backtests | In progress |
 | 6 | Dashboard, model card, decision memo, publication | Planned |
 
 ## Repository map
@@ -75,6 +75,10 @@ A calibrated linear model was selected on the policy window at 100 entity-dedupl
 ## Non-linear challenger
 
 The policy-selected gradient-boosting challenger reaches 34.71% mean daily precision@100 and 33.13% mean daily fraud-exposure capture@100 on locked OOT data—a 145% precision uplift over the calibrated linear baseline. Feature-family ablation shows that this uplift comes primarily from non-linearity; the incremental value of identity and past-only behavioural features is small and must pass day-level uncertainty checks rather than being assumed. See [`docs/challenger_decision_memo.md`](docs/challenger_decision_memo.md).
+
+## Four-action policy
+
+Under the explicitly hypothetical balanced scenario, a 100-review/day policy uses 83.8 reviews/day on locked OOT data, intervenes on 61.21% of fraud cases, covers 79.94% of fraud exposure, and produces a 57.82% effectiveness-adjusted prevented-exposure proxy. The result also interrupts 8,731 legitimate transactions, so customer-first and loss-first sensitivity scenarios remain visible rather than collapsing the decision into a single “savings” number. See [`docs/policy_decision_memo.md`](docs/policy_decision_memo.md).
 
 ## Claims boundary
 
