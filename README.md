@@ -1,15 +1,15 @@
 # Fraud Operations Intelligence Lab
 
-[![CI](https://github.com/nhatphan220506/fraud-ops-intelligence-lab/actions/workflows/ci.yml/badge.svg)](https://github.com/nhatphan220506/fraud-ops-intelligence-lab/actions/workflows/ci.yml)
+[![CI](https://github.com/thvh2006/fraud-ops-intelligence-lab/actions/workflows/ci.yml/badge.svg)](https://github.com/thvh2006/fraud-ops-intelligence-lab/actions/workflows/ci.yml)
 [![Data](https://img.shields.io/badge/data-IEEE--CIS-75a9ff)](https://www.kaggle.com/competitions/ieee-fraud-detection/)
 [![Validation](https://img.shields.io/badge/validation-locked%20OOT-ffbe55)](#validation-design)
 [![License](https://img.shields.io/badge/code-MIT-f3f7fb)](LICENSE)
 
 An end-to-end fraud decision system built around a constrained operations team—not a leaderboard-only classifier.
 
-**[Open the interactive decision cockpit →](https://nhatphan220506.github.io/fraud-ops-intelligence-lab/)**
+**[Open the interactive decision cockpit →](https://thvh2006.github.io/fraud-ops-intelligence-lab/)**
 
-[![Fraud Operations decision cockpit](docs/assets/dashboard-preview.png)](https://nhatphan220506.github.io/fraud-ops-intelligence-lab/)
+[![Fraud Operations decision cockpit](docs/assets/dashboard-preview.png)](https://thvh2006.github.io/fraud-ops-intelligence-lab/)
 
 Prefer an analyst handoff? **[Download the formula-driven Excel decision pack →](deliverables/Fraud_Ops_Analysis.xlsx)**
 
