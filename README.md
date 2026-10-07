@@ -1,6 +1,6 @@
 # Fraud Operations Intelligence Lab
 
-[![Tests](https://img.shields.io/badge/tests-16%20passing-2bd9c5)](#reproduce-the-analysis)
+[![CI](https://github.com/nhatphan220506/fraud-ops-intelligence-lab/actions/workflows/ci.yml/badge.svg)](https://github.com/nhatphan220506/fraud-ops-intelligence-lab/actions/workflows/ci.yml)
 [![Data](https://img.shields.io/badge/data-IEEE--CIS-75a9ff)](https://www.kaggle.com/competitions/ieee-fraud-detection/)
 [![Validation](https://img.shields.io/badge/validation-locked%20OOT-ffbe55)](#validation-design)
 [![License](https://img.shields.io/badge/code-MIT-f3f7fb)](LICENSE)
@@ -8,6 +8,10 @@
 An end-to-end fraud decision system built around a constrained operations team—not a leaderboard-only classifier.
 
 **[Open the interactive decision cockpit →](https://nhatphan220506.github.io/fraud-ops-intelligence-lab/)**
+
+[![Fraud Operations decision cockpit](docs/assets/dashboard-preview.png)](https://nhatphan220506.github.io/fraud-ops-intelligence-lab/)
+
+Prefer an analyst handoff? **[Download the formula-driven Excel decision pack →](deliverables/Fraud_Ops_Analysis.xlsx)**
 
 ## The decision
 
@@ -102,6 +106,7 @@ Rolling recalibration improves mean Brier score by only 0.00007–0.00008. The r
 dashboard/                interactive static decision cockpit
 configs/                  data, operations and economics assumptions
 data/                     ignored raw/interim/processed zones + contract
+deliverables/             formula-driven Excel analyst pack
 docs/                     research record, model card and decision memos
 reports/                  reproducible aggregate evidence
 scripts/                  pipeline entry points and dashboard-data build
@@ -111,6 +116,7 @@ tests/                    executable safeguards
 
 Key review documents:
 
+- [Excel decision pack](deliverables/Fraud_Ops_Analysis.xlsx) — executive summary, policy simulator, model review, weekly monitoring, data profile, and traceable source tables
 - [Executive decision memo](docs/executive_decision_memo.md)
 - [Model card](docs/model_card.md)
 - [Model comparison and uncertainty](docs/model_comparison_uncertainty.md)
