@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#07111f" />
+    <meta
+      name="description"
+      content="Interactive fraud operations decision lab built on the IEEE-CIS Fraud Detection dataset."
+    />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22><rect width=%2264%22 height=%2264%22 rx=%2214%22 fill=%22%2307111f%22/><path d=%22M12 46V18h40v28%22 fill=%22none%22 stroke=%22%232bd9c5%22 stroke-width=%226%22/><path d=%22M20 38l8-9 7 5 10-13%22 fill=%22none%22 stroke=%22%23ffbe55%22 stroke-width=%226%22/></svg>" />
+    <link rel="stylesheet" href="styles.css" />
+    <title>Fraud Operations Intelligence Lab</title>
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="#overview" aria-label="Fraud Operations Intelligence Lab home">
+        <span class="brand-mark">FO</span>
+        <span><strong>Fraud Ops</strong><small>Intelligence Lab</small></span>
+      </a>
+      <nav aria-label="Dashboard sections">
+        <a href="#overview" class="active">Decision</a>
+        <a href="#model">Model</a>
+        <a href="#monitoring">Monitoring</a>
+        <a href="#method">Method</a>
+      </nav>
+      <div class="status"><i></i> Locked OOT · 31 days</div>
+    </header>
+
+    <main id="overview">
+      <section class="intro">
+        <div>
+          <p class="eyebrow">Decision cockpit · IEEE-CIS · 590,540 transactions</p>
+          <h1>From fraud score to an operable intervention policy.</h1>
+          <p class="lede">A temporal, leakage-aware system that ranks alerts, routes actions, and makes the customer-friction trade-off explicit.</p>
+        </div>
+        <div class="controls" aria-label="Policy controls">
+          <label>Operating posture
+            <select id="scenario">
+              <option value="customer_first">Customer first</option>
+              <option value="balanced_reference" selected>Balanced</option>
+              <option value="loss_first">Loss first</option>
+            </select>
+          </label>
+          <label>Daily review capacity
+            <select id="capacity">
+              <option value="50">50</option>
+              <option value="100" selected>100</option>
+              <option value="250">250</option>
+              <option value="500">500</option>
+            </select>
+          </label>
+        </div>
+      </section>
+
+      <section class="kpis" aria-label="Key policy outcomes">
+        <article><span>Precision @ 100</span><strong>34.7%</strong><small>+20.6 pp vs linear baseline</small></article>
+        <article><span>Fraud exposure captured</span><strong>33.1%</strong><small>Top-100 alert queue</small></article>
+        <article><span>Prevented exposure proxy</span><strong id="prevented">57.8%</strong><small id="costReduction">118,783 units saved</small></article>
+        <article><span>Review utilisation</span><strong id="utilisation">83.8%</strong><small id="reviews">83.8 mean reviews / day</small></article>
+      </section>
+
+      <section class="panel decision-panel">
+        <div class="panel-head">
+          <div><p class="eyebrow">Action routing · locked out-of-time holdout</p><h2>One score, four interventions</h2></div>
+          <p id="policySummary">Balanced policy intervenes on 12.0% of transactions and reaches 61.2% of fraud cases.</p>
+        </div>
+        <div class="action-flow" id="actionFlow" aria-live="polite"></div>
+      </section>
+
+      <section class="section" id="model">
+        <div class="section-title">
+          <div><p class="eyebrow">Model evidence</p><h2>The challenger wins. The feature story is more nuanced.</h2></div>
+          <p>Gradient boosting materially improves alert precision over the leakage-safe linear baseline. The incremental lift from identity features alone is not statistically established.</p>
+        </div>
+        <div class="model-grid">
+          <article class="panel chart-panel">
+            <div class="mini-head"><h3>Locked OOT model comparison</h3><span>Average precision</span></div>
+            <div id="modelBars" class="bar-chart"></div>
+          </article>
+          <article class="panel verdict-card">
+            <p class="eyebrow">Promotion verdict</p>
+            <div class="verdict">PROMOTE <span>with guardrails</span></div>
+            <dl>
+              <div><dt>AP uplift</dt><dd>+319.7%</dd></div>
+              <div><dt>Precision@100 uplift</dt><dd>+145.1%</dd></div>
+              <div><dt>Identity lift CI</dt><dd>−0.94 to +0.68 pp</dd></div>
+            </dl>
+            <p class="note">Choose the nonlinear family for ranking power, but do not claim identity features caused the gain. Keep the simpler transaction-only challenger as a fallback.</p>
+          </article>
+        </div>
+        <div class="panel evidence-panel">
+          <div><p class="eyebrow">Ablation + uncertainty</p><h3>What each feature family actually earns</h3></div>
+          <div id="ablationTable" class="data-table"></div>
+        </div>
+      </section>
+
+      <section class="section" id="monitoring">
+        <div class="section-title">
+          <div><p class="eyebrow">Production readiness</p><h2>Drift and delayed labels are part of the model.</h2></div>
+          <p>Six out-of-time weeks are monitored for score shift, amount shift, calibration and alert quality. Thresholds are explicit before any simulated deployment.</p>
+        </div>
+        <div class="monitor-grid">
+          <article class="panel monitor-chart">
+            <div class="mini-head"><h3>Weekly monitoring</h3><div class="legend"><span class="psi">Score PSI</span><span class="ece">ECE</span></div></div>
+            <div id="monitorChart" class="svg-chart" aria-label="Weekly score PSI and expected calibration error"></div>
+          </article>
+          <article class="panel monitor-status">
+            <p class="eyebrow">Current state</p>
+            <strong class="all-clear"><i></i> 0 red alerts</strong>
+            <div class="status-list">
+              <div><span>Max score PSI</span><b>0.063</b><small>amber at 0.10</small></div>
+              <div><span>Max calibration error</span><b>0.008</b><small>amber at 0.02</small></div>
+              <div><span>Fast-feedback bias</span><b>14.5×</b><small>reviewed vs non-reviewed</small></div>
+            </div>
+          </article>
+        </div>
+        <div class="panel delay-panel">
+          <div><p class="eyebrow">Delayed labels</p><h3>Recalibration is tested at 7, 14 and 30 days</h3></div>
+          <div id="delayCards" class="delay-cards"></div>
+          <p class="note">The rolling calibrator improves mean Brier score only marginally. Monitor and collect labels, but do not add operational complexity without a material gain.</p>
+        </div>
+      </section>
+
+      <section class="section" id="method">
+        <div class="section-title">
+          <div><p class="eyebrow">How the evidence was built</p><h2>A decision system, not a leaderboard notebook.</h2></div>
+          <p>The project separates model development, threshold design and final evaluation in time. No threshold is tuned on the locked holdout.</p>
+        </div>
+        <div class="timeline panel" id="timeline"></div>
+        <div class="method-grid">
+          <article class="panel"><span class="step">01</span><h3>Profile the operating reality</h3><p>Measure rare-event prevalence, identity coverage, entity concentration, missingness and weekly instability before modelling.</p></article>
+          <article class="panel"><span class="step">02</span><h3>Build leakage-safe baselines</h3><p>Benchmark rules and a calibrated linear model with temporal validation and entity-deduplicated daily alert metrics.</p></article>
+          <article class="panel"><span class="step">03</span><h3>Challenge and falsify</h3><p>Compare nonlinear models, run feature-family ablations and bootstrap daily metric differences instead of trusting a single score.</p></article>
+          <article class="panel"><span class="step">04</span><h3>Translate score to action</h3><p>Route allow, step-up, review and block actions under capacity and cost assumptions; stress-test three operating postures.</p></article>
+        </div>
+        <div class="limitations panel">
+          <div><p class="eyebrow">Honest limitations</p><h3>What this portfolio does not pretend</h3></div>
+          <ul>
+            <li>IEEE-CIS labels are a competition proxy, not confirmed production chargebacks.</li>
+            <li>Cost and intervention effectiveness are explicit scenarios, not observed causal effects.</li>
+            <li>Device and identity fields are partially observed; incremental value is uncertain.</li>
+            <li>Shadow mode and human investigation would be required before live decisioning.</li>
+          </ul>
+        </div>
+      </section>
+
+      <footer>
+        <div><strong>Fraud Operations Intelligence Lab</strong><p>Portfolio case study · real public data · simulated decision policy</p></div>
+        <div class="footer-links"><a href="https://github.com/nhatphan220506/fraud-ops-intelligence-lab">GitHub</a><a href="https://github.com/nhatphan220506/fraud-ops-intelligence-lab/blob/main/docs/model_card.md">Model card</a><a href="https://github.com/nhatphan220506/fraud-ops-intelligence-lab/blob/main/docs/executive_decision_memo.md">Decision memo</a></div>
+      </footer>
+    </main>
+    <script src="app.js"></script>
+  </body>
+</html>
