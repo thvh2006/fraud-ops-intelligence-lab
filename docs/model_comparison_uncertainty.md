@@ -6,10 +6,14 @@ The model is used to form a daily queue, so transaction-level confidence interva
 
 ## Results
 
-- Against the calibrated linear baseline on the **policy window**, `gbm_plus_identity` improves mean daily precision@100 by **19.48%** (95% bootstrap interval **16.48% to 22.35%**; probability of positive uplift **100.0%**).
-- Against transaction-only GBM on the **policy window**, the identity increment is **0.30%** (95% interval **-0.30% to 0.96%**).
-- On locked OOT, the identity increment versus transaction-only GBM is **-0.13%** (95% interval **-0.94% to 0.68%**).
+- Against the calibrated linear reference on the **policy window**, `gbm_transaction` improves mean daily precision@100 by **19.17%** (95% bootstrap interval **16.04% to 22.09%**). This confirms nonlinear ranking value but is not marketed as percentage uplift.
+- Against identity GBM on the **policy window**, the selected transaction-only model differs by **-0.30%** (95% interval **-0.96% to 0.30%**).
+- On locked OOT, the transaction-only difference versus identity GBM is **0.13%** (95% interval **-0.68% to 0.94%**).
 
 ## Decision
 
-The non-linear family clearly improves the queue over the linear baseline. The incremental value of identity and engineered behavioural history is not yet established if its paired interval includes zero. `gbm_plus_identity` remains the policy-selected candidate because the selection rule was declared before OOT inspection, but the simpler transaction model stays an active challenger. This prevents a tiny policy-window difference from being marketed as a robust feature uplift.
+The non-linear family clearly improves the queue over the linear reference. Identity
+and engineered behavioural history do not clear the 1-point parsimony gate and their
+paired intervals include zero. Governance therefore selects `gbm_transaction`; the
+added-feature models remain research challengers. Proxy identity must also pass an
+independent entity-resolution validation before production use.

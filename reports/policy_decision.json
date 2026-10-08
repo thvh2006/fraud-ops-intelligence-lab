@@ -1,12 +1,12 @@
 {
   "reference_scenario": "balanced_reference",
   "reference_review_capacity": 100,
-  "oot_intervention_rate": 0.1198676917171854,
-  "oot_fraud_case_intervention_rate": 0.6120661693156016,
-  "oot_fraud_exposure_intervention_rate": 0.7993968895636799,
-  "oot_prevented_exposure_proxy_rate": 0.5781622673111589,
-  "oot_mean_daily_reviews": 83.83870967741936,
-  "oot_review_capacity_utilisation": 0.8383870967741935,
-  "oot_legitimate_transactions_interrupted": 8731,
-  "oot_proxy_cost_reduction": 118782.70851
+  "oot_intervention_rate": 0.11871620324900374,
+  "oot_fraud_case_intervention_rate": 0.6107687317547843,
+  "oot_fraud_exposure_intervention_rate": 0.7918072849448999,
+  "oot_prevented_exposure_proxy_rate": 0.5691751107514508,
+  "oot_mean_daily_reviews": 83.90322580645162,
+  "oot_review_capacity_utilisation": 0.8390322580645161,
+  "oot_legitimate_transactions_interrupted": 8633,
+  "oot_proxy_cost_reduction": 117103.51205000002
 }

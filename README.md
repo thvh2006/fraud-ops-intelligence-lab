@@ -23,15 +23,15 @@ The offline evidence supports advancing a gradient-boosting challenger to **shad
 
 | Result | Locked OOT evidence | Why it matters |
 |---|---:|---|
-| Mean daily precision@100 | **34.71%** | 145.1% uplift over the linear baseline |
-| Mean daily recall@100 | **35.67%** | Queue finds over one-third of daily fraud cases |
-| Fraud exposure captured@100 | **33.13%** | Queue ranking reflects value, not only case count |
-| Average precision | **0.460** | Up from 0.110 for the linear baseline |
-| Balanced policy reach | **61.21%** of fraud cases | Across step-up, review, and block actions |
-| Prevented-exposure proxy | **57.82%** | Scenario output after assumed action effectiveness |
+| Mean daily precision@100 | **34.84%** | +20.68 percentage points vs linear |
+| Mean daily recall@100 | **35.80%** | Queue finds over one-third of daily fraud cases |
+| Fraud exposure captured@100 | **32.44%** | Queue ranking reflects value, not only case count |
+| Average precision | **0.461** | Up from 0.110 for the linear baseline |
+| Balanced policy reach | **61.08%** of fraud cases | Across step-up, review, and block actions |
+| Policy status | **Assumption-driven scenario** | Not observed prevention or realised savings |
 | Maximum score PSI | **0.063** | Below the pre-declared 0.10 amber threshold |
 
-The selected `gbm_plus_identity` model wins the policy-window metric, but its incremental precision over the transaction-only GBM is not statistically established. The credible claim is that **non-linearity drives the improvement**; identity features remain optional and governance-sensitive.
+The governed selection is `gbm_transaction`. Identity produced only a +0.30 percentage-point policy-window precision gain, below the pre-declared +1.00 point parsimony gate, and its locked-OOT interval crosses zero. The credible claim is that **non-linearity drives the improvement**; identity remains a research challenger, not a required dependency.
 
 ## What makes this more than a Kaggle model
 
@@ -43,6 +43,7 @@ The selected `gbm_plus_identity` model wins the policy-window metric, but its in
 - **Delayed labels:** fast selected investigator outcomes are separated from slower population outcomes.
 - **Monitoring:** score drift, amount drift, calibration, alert quality, identity coverage, and new-entity rate.
 - **Honest claims boundary:** exposure is not loss; simulated cost reduction is not realised savings; offline promotion is not production approval.
+- **Entity caveat:** the queue key is an engineered proxy, not a verified customer identifier; production deduplication requires an independently validated entity-resolution layer.
 
 ## Data
 
@@ -76,10 +77,10 @@ No random split is used for the final claim. No model, feature choice, threshold
 | Rules | Transparent operating benchmark | 0.065 | 0.687 | 0.0332 |
 | Calibrated linear | Leakage-safe interpretable baseline | 0.110 | 0.711 | 0.0332 |
 | GBM transaction core | Test non-linearity without identity | 0.461 | 0.880 | **0.0241** |
-| GBM + identity | Policy-selected challenger | 0.460 | **0.883** | 0.0242 |
+| GBM + identity | Research challenger; below parsimony gate | 0.460 | **0.883** | 0.0242 |
 | GBM + behaviour | Test past-only velocity/novelty features | 0.455 | 0.878 | 0.0244 |
 
-The challenger’s daily precision uplift over the linear baseline is robust. Its difference from the transaction-only GBM is not: OOT mean difference is −0.13 percentage points with a 95% interval from −0.94 to +0.68.
+The transaction GBM improves daily precision by 20.68 percentage points over the linear baseline. Its difference from the identity challenger is not established: OOT mean difference is +0.13 percentage points with a 95% interval from −0.68 to +0.94.
 
 ## Four-action policy
 
@@ -87,10 +88,10 @@ The balanced reference scenario at 100 nominal reviews/day routes the locked hol
 
 | Action | Transactions | Observed fraud rate | Role |
 |---|---:|---:|---|
-| Allow | 77,963 | 1.53% | No intervention |
-| Step-up | 6,451 | 8.42% | Additional authentication |
-| Review | 2,599 | 12.16% | Capacity-constrained analyst queue |
-| Block | 1,568 | 65.56% | High-confidence simulated intervention |
+| Allow | 78,065 | 1.54% | No intervention |
+| Step-up | 6,372 | 8.46% | Additional authentication |
+| Review | 2,601 | 12.53% | Capacity-constrained analyst queue |
+| Block | 1,543 | 65.98% | High-confidence simulated intervention |
 
 The dashboard lets the reader switch among customer-first, balanced, and loss-first assumptions at capacities of 50, 100, 250, and 500. This makes the customer-friction trade-off inspectable instead of hiding it behind one “optimal” threshold.
 

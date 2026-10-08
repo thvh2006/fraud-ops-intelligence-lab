@@ -2,7 +2,11 @@
 
 ## Selection
 
-`gbm_plus_identity` wins on the pre-declared policy metric: mean daily precision at 100 entity-deduplicated alerts. All candidates use the same development, calibration, policy, and locked OOT boundaries.
+`gbm_transaction` is selected by a governed policy rule: maximize mean daily
+precision at 100 entity-deduplicated alerts, but prefer the transaction-only model
+unless added feature families improve absolute precision by at least 1 percentage
+point. Selection reason: `parsimony_gate: best added-feature gain 0.0030 is below 0.0100`. All candidates use the same
+development, calibration, policy, and locked OOT boundaries.
 
 ## Feature-family ablation on the policy window
 
@@ -14,17 +18,15 @@ The ablation isolates whether identity and behavioural history improve the opera
 
 ## Locked OOT evidence for the selected challenger
 
-- Average precision: **0.460**
-- ROC-AUC: **0.883**
-- Brier score: **0.0242**
-- Mean daily precision@100: **34.71%**
-- Mean daily recall@100: **35.67%**
-- Mean daily fraud-exposure capture@100: **33.13%**
-- Precision uplift versus calibrated linear baseline: **145.1%**
-- AP uplift versus calibrated linear baseline: **319.7%**
+- Average precision: **0.461**
+- ROC-AUC: **0.880**
+- Brier score: **0.0241**
+- Mean daily precision@100: **34.84%**
+- Mean daily recall@100: **35.80%**
+- Mean daily fraud-exposure capture@100: **32.44%**
+- Calibrated linear reference precision@100: retained as a floor, not a headline uplift claim.
+- Feature-family comparisons: interpreted with paired day-level uncertainty.
 
 ## Promotion gate
 
 The challenger is promoted for policy design only if it improves the declared policy metric and does not create an incoherent friction/exposure trade-off. Promotion here means “preferred for the next offline policy stage,” not production deployment.
-
-Day-level paired bootstrap confirms that the non-linear family materially improves on the linear baseline, while the small differences among GBM feature sets are not robust. See `docs/model_comparison_uncertainty.md`.

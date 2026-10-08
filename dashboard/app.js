@@ -18,7 +18,7 @@ function renderPolicy() {
   document.querySelector("#prevented").textContent = pct(policy.prevented_exposure_proxy_rate);
   document.querySelector("#utilisation").textContent = pct(policy.review_capacity_utilisation);
   document.querySelector("#reviews").textContent = `${policy.mean_daily_reviews.toFixed(1)} mean reviews / day`;
-  document.querySelector("#costReduction").textContent = `${fmt.format(Math.round(policy.proxy_cost_reduction))} units saved`;
+  document.querySelector("#costReduction").textContent = `${fmt.format(Math.round(policy.proxy_cost_reduction))} scenario units`;
   document.querySelector("#policySummary").textContent = `${label(scenario)} policy intervenes on ${pct(policy.intervention_rate)} of transactions and reaches ${pct(policy.fraud_case_intervention_rate)} of fraud cases.`;
   document.querySelector("#actionFlow").innerHTML = actions.map((action, index) => `
     <article class="action" style="--accent:${accents[index]}">
@@ -31,8 +31,9 @@ function renderPolicy() {
 
 function renderModels() {
   const baseline = dashboard.baseline_models.find(row => row.model === "linear" && row.partition === "oot");
-  const challenger = dashboard.challenger_models.find(row => row.model === "gbm_plus_identity" && row.partition === "oot");
-  const models = [["Linear baseline", baseline.average_precision], ["GBM + identity", challenger.average_precision]];
+  const selectedName = dashboard.challenger_decision.selected_on_policy_window;
+  const challenger = dashboard.challenger_models.find(row => row.model === selectedName && row.partition === "oot");
+  const models = [["Linear reference", baseline.average_precision], ["Governed transaction GBM", challenger.average_precision]];
   document.querySelector("#modelBars").innerHTML = models.map(([name, value]) => `
     <div class="bar-row"><span class="bar-label">${name}</span><div class="bar-track"><div class="bar-fill" style="width:${value / .5 * 100}%"></div></div><span class="bar-value">${value.toFixed(3)}</span></div>`).join("");
 

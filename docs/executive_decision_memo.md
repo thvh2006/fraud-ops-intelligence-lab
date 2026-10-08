@@ -4,13 +4,13 @@
 
 ## Why advance it
 
-On the locked final 15% of events, the challenger improves mean daily precision@100 from 14.16% to 34.71% and fraud-exposure capture@100 from 10.29% to 33.13%. This is a meaningful operations improvement: at the same top-100 queue size, investigators would see roughly 21 additional fraud-labelled alerts per 100 reviewed alerts.
+On the locked final 15% of events, the governed transaction GBM improves mean daily precision@100 from 14.16% to 34.84% and fraud-exposure capture@100 from 10.29% to 32.44%. This is a meaningful operations improvement: at the same top-100 queue size, investigators would see roughly 21 additional fraud-labelled alerts per 100 reviewed alerts.
 
 The result survives the design choices that matter most for this use case: chronological evaluation, entity-deduplicated queues, probability calibration, capacity-aware metrics, and a locked final holdout.
 
 ## Recommended operating posture
 
-Use the **balanced policy** as the reference for shadow-mode measurement, with 100 reviews/day as the nominal capacity. On the locked holdout, this routes 77,963 transactions to allow, 6,451 to step-up, 2,599 to review, and 1,568 to block. Observed fraud rate increases monotonically from 1.53% in allow to 65.56% in block, which is directionally coherent.
+Use the **balanced policy** as the reference for shadow-mode measurement, with 100 reviews/day as the nominal capacity. On the locked holdout, this routes 78,065 transactions to allow, 6,372 to step-up, 2,601 to review, and 1,543 to block. Observed fraud rate increases monotonically from 1.54% in allow to 65.98% in block, which is directionally coherent.
 
 Do not treat those actions as deployment instructions. In shadow mode, record the recommended action while the existing process remains authoritative. Measure completion, investigator yield, false-positive complaints, review time, and eventual chargebacks.
 
@@ -18,7 +18,7 @@ Do not treat those actions as deployment instructions. In shadow mode, record th
 
 The evidence supports the **nonlinear model family**. It does not show that identity or behavioural features add a stable incremental benefit: the day-level confidence interval for identity versus the transaction-only GBM crosses zero. The transaction-only GBM should therefore remain the fallback if identity availability, latency, or governance cost becomes problematic.
 
-The balanced policy's simulated 118,783-unit cost reduction is not a savings forecast. It depends on hypothetical action effectiveness and cost inputs, while `TransactionAmt` is only an exposure proxy.
+The balanced policy's simulated 117,104-unit cost reduction is not a savings forecast. It depends on hypothetical action effectiveness and cost inputs, while `TransactionAmt` is only an exposure proxy.
 
 ## Promotion gates
 
