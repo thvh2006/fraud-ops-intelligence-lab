@@ -2,11 +2,11 @@
 
 from __future__ import annotations
 
+import json
 from pathlib import Path
 
 import numpy as np
 import pandas as pd
-
 
 ROOT = Path(__file__).resolve().parents[1]
 REPORTS = ROOT / "reports"
@@ -47,17 +47,30 @@ def main() -> None:
     baseline = pd.read_csv(REPORTS / "baseline_daily_operations.csv")
     challenger = pd.read_csv(REPORTS / "challenger_daily_operations.csv")
     combined = pd.concat([baseline, challenger], ignore_index=True)
-    selected = "gbm_plus_identity"
+    selected = json.loads((REPORTS / "challenger_decision.json").read_text())[
+        "selected_on_policy_window"
+    ]
     comparisons = []
     for partition in ("policy", "oot"):
-        for reference in ("linear", "gbm_transaction", "gbm_plus_behaviour"):
+        for reference in (
+            "linear",
+            "gbm_transaction",
+            "gbm_plus_identity",
+            "gbm_plus_behaviour",
+        ):
+            if reference == selected:
+                continue
             comparisons.append(paired_bootstrap(combined, selected, reference, partition))
     result = pd.DataFrame(comparisons)
     result.to_csv(REPORTS / "model_comparison_uncertainty.csv", index=False)
 
     policy_linear = result.query("partition == 'policy' and reference == 'linear'").iloc[0]
-    policy_core = result.query("partition == 'policy' and reference == 'gbm_transaction'").iloc[0]
-    oot_core = result.query("partition == 'oot' and reference == 'gbm_transaction'").iloc[0]
+    policy_identity = result.query(
+        "partition == 'policy' and reference == 'gbm_plus_identity'"
+    ).iloc[0]
+    oot_identity = result.query(
+        "partition == 'oot' and reference == 'gbm_plus_identity'"
+    ).iloc[0]
     markdown = f"""# Day-level model comparison uncertainty
 
 ## Why this check exists
@@ -66,13 +79,17 @@ The model is used to form a daily queue, so transaction-level confidence interva
 
 ## Results
 
-- Against the calibrated linear baseline on the **policy window**, `gbm_plus_identity` improves mean daily precision@100 by **{policy_linear['mean_difference']:.2%}** (95% bootstrap interval **{policy_linear['ci_low_95']:.2%} to {policy_linear['ci_high_95']:.2%}**; probability of positive uplift **{policy_linear['probability_candidate_better']:.1%}**).
-- Against transaction-only GBM on the **policy window**, the identity increment is **{policy_core['mean_difference']:.2%}** (95% interval **{policy_core['ci_low_95']:.2%} to {policy_core['ci_high_95']:.2%}**).
-- On locked OOT, the identity increment versus transaction-only GBM is **{oot_core['mean_difference']:.2%}** (95% interval **{oot_core['ci_low_95']:.2%} to {oot_core['ci_high_95']:.2%}**).
+- Against the calibrated linear reference on the **policy window**, `{selected}` improves mean daily precision@100 by **{policy_linear['mean_difference']:.2%}** (95% bootstrap interval **{policy_linear['ci_low_95']:.2%} to {policy_linear['ci_high_95']:.2%}**). This confirms nonlinear ranking value but is not marketed as percentage uplift.
+- Against identity GBM on the **policy window**, the selected transaction-only model differs by **{policy_identity['mean_difference']:.2%}** (95% interval **{policy_identity['ci_low_95']:.2%} to {policy_identity['ci_high_95']:.2%}**).
+- On locked OOT, the transaction-only difference versus identity GBM is **{oot_identity['mean_difference']:.2%}** (95% interval **{oot_identity['ci_low_95']:.2%} to {oot_identity['ci_high_95']:.2%}**).
 
 ## Decision
 
-The non-linear family clearly improves the queue over the linear baseline. The incremental value of identity and engineered behavioural history is not yet established if its paired interval includes zero. `gbm_plus_identity` remains the policy-selected candidate because the selection rule was declared before OOT inspection, but the simpler transaction model stays an active challenger. This prevents a tiny policy-window difference from being marketed as a robust feature uplift.
+The non-linear family clearly improves the queue over the linear reference. Identity
+and engineered behavioural history do not clear the 1-point parsimony gate and their
+paired intervals include zero. Governance therefore selects `gbm_transaction`; the
+added-feature models remain research challengers. Proxy identity must also pass an
+independent entity-resolution validation before production use.
 """
     (DOCS / "model_comparison_uncertainty.md").write_text(markdown)
     print(result.to_string(index=False))

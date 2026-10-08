@@ -55,9 +55,9 @@
 
       <section class="kpis" aria-label="Key policy outcomes">
         <article><span>Precision @ 100</span><strong>34.7%</strong><small>+20.6 pp vs linear baseline</small></article>
-        <article><span>Fraud exposure captured</span><strong>33.1%</strong><small>Top-100 alert queue</small></article>
-        <article><span>Prevented exposure proxy</span><strong id="prevented">57.8%</strong><small id="costReduction">118,783 units saved</small></article>
-        <article><span>Review utilisation</span><strong id="utilisation">83.8%</strong><small id="reviews">83.8 mean reviews / day</small></article>
+        <article><span>Fraud exposure captured</span><strong>32.4%</strong><small>Top-100 alert queue</small></article>
+        <article><span>Assumption-driven proxy</span><strong id="prevented">56.9%</strong><small id="costReduction">117,104 scenario units · not savings</small></article>
+        <article><span>Review utilisation</span><strong id="utilisation">83.9%</strong><small id="reviews">83.9 mean reviews / day</small></article>
       </section>
 
       <section class="panel decision-panel">
@@ -82,11 +82,11 @@
             <p class="eyebrow">Promotion verdict</p>
             <div class="verdict">PROMOTE <span>with guardrails</span></div>
             <dl>
-              <div><dt>AP uplift</dt><dd>+319.7%</dd></div>
-              <div><dt>Precision@100 uplift</dt><dd>+145.1%</dd></div>
-              <div><dt>Identity lift CI</dt><dd>−0.94 to +0.68 pp</dd></div>
+              <div><dt>Selected-model AP</dt><dd>0.461</dd></div>
+              <div><dt>Precision@100</dt><dd>34.84%</dd></div>
+              <div><dt>Identity difference CI</dt><dd>−0.68 to +0.94 pp</dd></div>
             </dl>
-            <p class="note">Choose the nonlinear family for ranking power, but do not claim identity features caused the gain. Keep the simpler transaction-only challenger as a fallback.</p>
+            <p class="note">The transaction-only GBM is the governed selection. Identity remains a research challenger because its small gain did not clear the parsimony gate.</p>
           </article>
         </div>
         <div class="panel evidence-panel">

@@ -7,7 +7,6 @@ import sys
 from pathlib import Path
 
 import joblib
-import numpy as np
 import pandas as pd
 from sklearn.compose import ColumnTransformer
 from sklearn.ensemble import HistGradientBoostingClassifier
@@ -15,11 +14,10 @@ from sklearn.impute import SimpleImputer
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OrdinalEncoder
 
-
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from scripts.train_baseline import (  # noqa: E402
+from scripts.train_baseline import (
     CATEGORICAL,
     NUMERIC,
     calibrated_probability,
@@ -28,7 +26,7 @@ from scripts.train_baseline import (  # noqa: E402
     operations_for,
     prepare_data,
 )
-
+from src.model_selection import select_governed_model
 
 REPORTS = ROOT / "reports"
 MODELS = ROOT / "models"
@@ -97,6 +95,7 @@ def build_challenger(numeric: list[str], categorical: list[str]) -> Pipeline:
 
 
 def main() -> None:
+    MODELS.mkdir(exist_ok=True)
     frame = prepare_data()
     masks = {name: frame["partition"].eq(name) for name in ("development", "calibration", "policy", "oot")}
     metrics: list[dict[str, object]] = []
@@ -155,7 +154,7 @@ def main() -> None:
     selection = summary.query(
         "partition == 'policy' and queue_type == 'entity_deduplicated' and capacity == 100"
     ).sort_values(["mean_precision_at_k", "mean_exposure_captured_at_k"], ascending=False)
-    selected_model = str(selection.iloc[0]["model"])
+    selected_model, selection_reason = select_governed_model(selection)
     selected = fitted[selected_model]
     joblib.dump(selected, MODELS / "nonlinear_challenger.joblib")
 
@@ -193,6 +192,8 @@ def main() -> None:
 
     result = {
         "selected_on_policy_window": selected_model,
+        "selection_reason": selection_reason,
+        "parsimony_gate_absolute_precision_gain": 0.01,
         "selection_metric": "mean daily precision at 100 entity-deduplicated alerts",
         "oot_average_precision": float(selected_oot_metric["average_precision"]),
         "oot_roc_auc": float(selected_oot_metric["roc_auc"]),
@@ -224,7 +225,11 @@ def main() -> None:
 
 ## Selection
 
-`{selected_model}` wins on the pre-declared policy metric: mean daily precision at 100 entity-deduplicated alerts. All candidates use the same development, calibration, policy, and locked OOT boundaries.
+`{selected_model}` is selected by a governed policy rule: maximize mean daily
+precision at 100 entity-deduplicated alerts, but prefer the transaction-only model
+unless added feature families improve absolute precision by at least 1 percentage
+point. Selection reason: `{selection_reason}`. All candidates use the same
+development, calibration, policy, and locked OOT boundaries.
 
 ## Feature-family ablation on the policy window
 
@@ -240,8 +245,8 @@ The ablation isolates whether identity and behavioural history improve the opera
 - Mean daily precision@100: **{result['oot_mean_daily_precision_at_100']:.2%}**
 - Mean daily recall@100: **{result['oot_mean_daily_recall_at_100']:.2%}**
 - Mean daily fraud-exposure capture@100: **{result['oot_mean_daily_exposure_capture_at_100']:.2%}**
-- Precision uplift versus calibrated linear baseline: **{result['precision_uplift_vs_linear']:.1%}**
-- AP uplift versus calibrated linear baseline: **{result['average_precision_uplift_vs_linear']:.1%}**
+- Calibrated linear reference precision@100: retained as a floor, not a headline uplift claim.
+- Feature-family comparisons: interpreted with paired day-level uncertainty.
 
 ## Promotion gate
 

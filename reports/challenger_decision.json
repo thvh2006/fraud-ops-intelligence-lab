@@ -1,13 +1,15 @@
 {
-  "selected_on_policy_window": "gbm_plus_identity",
+  "selected_on_policy_window": "gbm_transaction",
+  "selection_reason": "parsimony_gate: best added-feature gain 0.0030 is below 0.0100",
+  "parsimony_gate_absolute_precision_gain": 0.01,
   "selection_metric": "mean daily precision at 100 entity-deduplicated alerts",
-  "oot_average_precision": 0.45969226083775816,
-  "oot_roc_auc": 0.8827190472773557,
-  "oot_brier_score": 0.024192064595778395,
-  "oot_mean_daily_precision_at_100": 0.3470967741935484,
-  "oot_mean_daily_recall_at_100": 0.3567011697480654,
-  "oot_mean_daily_exposure_capture_at_100": 0.33132154845242245,
-  "oot_legitimate_exposure_interrupted_at_100": 367421.466,
-  "precision_uplift_vs_linear": 1.4510250569476089,
-  "average_precision_uplift_vs_linear": 3.197461149590098
+  "oot_average_precision": 0.4608689910284057,
+  "oot_roc_auc": 0.8803450148517206,
+  "oot_brier_score": 0.024139825940593107,
+  "oot_mean_daily_precision_at_100": 0.34838709677419355,
+  "oot_mean_daily_recall_at_100": 0.35804712214255374,
+  "oot_mean_daily_exposure_capture_at_100": 0.3243731192908206,
+  "oot_legitimate_exposure_interrupted_at_100": 356307.918,
+  "precision_uplift_vs_linear": 1.4601366742596817,
+  "average_precision_uplift_vs_linear": 3.208205901415573
 }

@@ -4,7 +4,7 @@
 
 | Field | Value |
 |---|---|
-| Model | `gbm_plus_identity` |
+| Model | `gbm_transaction` |
 | Role | Rank transactions for fraud operations and supply calibrated risk to a simulated four-action policy |
 | Algorithm | Histogram gradient boosting with post-hoc probability calibration |
 | Prediction unit | Transaction |
@@ -43,10 +43,11 @@ Every behavioural feature at time `t` uses only events strictly earlier than `t`
 
 ## Features
 
-The selected challenger uses 49 features from two families:
+The selected challenger uses 46 transaction-core features:
 
 - **Transaction core:** amount, product, payment-card, address, email-domain, device and anonymised transaction attributes.
-- **Identity indicators:** availability and selected anonymised identity attributes, with missing joins treated as missing—not as low-risk evidence.
+
+Identity indicators were evaluated as a separate research challenger. Their policy-window gain was only +0.30 percentage points—below the pre-declared +1.00 point parsimony gate—and did not replicate reliably on locked OOT data.
 
 Past-only behavioural features were also tested. They did not produce a stable improvement over the selected feature set and were not required for the reference policy.
 
@@ -56,12 +57,12 @@ Past-only behavioural features were also tested. They did not produce a stable i
 
 | Metric | Linear baseline | Selected challenger | Change |
 |---|---:|---:|---:|
-| Average precision | 0.110 | 0.460 | +319.7% |
-| ROC-AUC | 0.711 | 0.883 | +0.172 |
-| Brier score | 0.0332 | 0.0242 | −0.0090 |
-| Mean daily precision@100 | 14.16% | 34.71% | +20.55 pp |
-| Mean daily recall@100 | 14.28% | 35.67% | +21.39 pp |
-| Mean daily fraud-exposure capture@100 | 10.29% | 33.13% | +22.84 pp |
+| Average precision | 0.110 | 0.461 | +0.351 |
+| ROC-AUC | 0.711 | 0.880 | +0.169 |
+| Brier score | 0.0332 | 0.0241 | −0.0091 |
+| Mean daily precision@100 | 14.16% | 34.84% | +20.68 pp |
+| Mean daily recall@100 | 14.28% | 35.80% | +21.52 pp |
+| Mean daily fraud-exposure capture@100 | 10.29% | 32.44% | +22.15 pp |
 
 The day-level paired bootstrap supports the challenger over the linear baseline. It does not establish a reliable incremental gain from adding identity features to the transaction-only GBM: OOT precision@100 difference is −0.13 pp with a 95% interval from −0.94 to +0.68 pp.
 
@@ -69,11 +70,11 @@ The day-level paired bootstrap supports the challenger over the linear baseline.
 
 Under the balanced reference assumptions and a nominal capacity of 100 reviews per elapsed day, the locked OOT policy:
 
-- uses 83.8 reviews/day;
-- intervenes on 11.99% of transactions;
-- reaches 61.21% of fraud cases and 79.94% of fraud exposure;
-- produces a 57.82% effectiveness-adjusted prevented-exposure proxy;
-- interrupts 8,731 legitimate transactions.
+- uses 83.9 reviews/day;
+- intervenes on 11.87% of transactions;
+- reaches 61.08% of fraud cases and 79.18% of fraud exposure;
+- produces a 56.92% effectiveness-adjusted proxy under assumed intervention effects;
+- interrupts 8,633 legitimate transactions.
 
 These figures are scenario outputs. Intervention effectiveness, friction cost, review cost, and loss-given-fraud are assumptions—not outcomes observed in the source data.
 
@@ -85,6 +86,7 @@ These figures are scenario outputs. Intervention effectiveness, friction cost, r
 | Selection bias | Investigator feedback over-represents high-score cases | Fast reviewed outcomes separated from delayed population labels |
 | Customer harm | False positives can create authentication, review, or decline friction | Legitimate transactions and exposure interrupted are first-class policy metrics |
 | Partial identity coverage | Missing identity may correlate with channel and risk | Missingness is explicit; feature-family value is ablated and uncertainty-tested |
+| Unverified entity proxy | One real customer may split across keys or multiple people may merge | Treat queue metrics as conditional on proxy quality; validate linkage before production use |
 | Drift | Fraud patterns and traffic mix change | Weekly score PSI, amount PSI, calibration error, alert quality, identity coverage, and new-entity rate |
 | Proxy economics | Transaction amount is not realised loss | Reported as exposure; cost outputs labelled simulations |
 

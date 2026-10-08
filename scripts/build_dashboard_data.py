@@ -6,7 +6,6 @@ import csv
 import json
 from pathlib import Path
 
-
 ROOT = Path(__file__).resolve().parents[1]
 REPORTS = ROOT / "reports"
 
@@ -31,6 +30,9 @@ def main() -> None:
         "partitions": rows("temporal_partitions.csv"),
         "baseline_models": rows("baseline_model_metrics.csv"),
         "challenger_models": rows("challenger_model_metrics.csv"),
+        "challenger_decision": json.loads(
+            (REPORTS / "challenger_decision.json").read_text()
+        ),
         "ablation": rows("feature_family_ablation.csv"),
         "uncertainty": rows("model_comparison_uncertainty.csv"),
         "policy": rows("policy_sensitivity.csv"),
