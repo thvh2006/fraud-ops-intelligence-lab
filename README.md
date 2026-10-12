@@ -13,6 +13,12 @@ An end-to-end fraud decision system built around a constrained operations team�
 
 Prefer an analyst handoff? **[Download the formula-driven Excel decision pack →](deliverables/Fraud_Ops_Analysis.xlsx)**
 
+## Start here
+
+- [Executed research walkthrough](notebooks/01_research_walkthrough.ipynb) — operating grain, proxy entity, and strictly past-only features
+- [Executed model validation](notebooks/02_model_validation.ipynb) — ablation, paired uncertainty, and the parsimony decision
+- [Feature provenance](docs/feature_provenance.md) and [machine-readable register](reports/feature_provenance.csv)
+
 ## The decision
 
 > With limited daily investigation capacity and delayed labels, which transactions should be allowed, stepped up, reviewed, or blocked to capture the most fraud exposure while controlling legitimate-customer friction?
