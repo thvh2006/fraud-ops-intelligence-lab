@@ -15,8 +15,8 @@ Prefer an analyst handoff? **[Download the formula-driven Excel decision pack �
 
 ## Start here
 
-- [Executed research walkthrough](notebooks/01_research_walkthrough.ipynb) — operating grain, proxy entity, and strictly past-only features
-- [Executed model validation](notebooks/02_model_validation.ipynb) — ablation, paired uncertainty, and the parsimony decision
+- [Deep executed research walkthrough](notebooks/01_research_walkthrough.ipynb) — operating landscape, chronology, exposure concentration, past-only features, diagnostics, and limitations
+- [Deep executed model validation](notebooks/02_model_validation.ipynb) — challenger evidence, feature-family ablation, day-level uncertainty, policy sensitivity, monitoring, and promotion gates
 - [Feature provenance](docs/feature_provenance.md) and [machine-readable register](reports/feature_provenance.csv)
 
 ## The decision
